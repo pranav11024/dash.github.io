@@ -287,61 +287,6 @@
             background-color: #1e88e5;
         }
 
-        /* Frame styles */
-        .frame-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .frame-container.visible {
-            display: flex;
-        }
-
-        .frame {
-            width: 90%;
-            height: 90%;
-            border-radius: 15px;
-            border: 5px solid #ff3131;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.548);
-            position: relative;
-        }
-
-        .light-mode .frame {
-            border: 5px solid #2196f3;
-            box-shadow: 0 0 20px rgba(37, 122, 235, 0.596);
-        }
-
-        .frame iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 15px;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ff3131;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        .light-mode .close-btn {
-            background-color: #2196f3;
-        }
     </style>
 </head>
 <body>
@@ -364,12 +309,12 @@
                 </div>
                 <h2>Semester 5</h2>
                 <div class="courses">
-                    <div class="course" data-link="https://drive.google.com/drive/folders/1rUVz5ji7zNnnt1l_DhvbOCfSFWz6QUkb?usp=sharing">Machine Learning<br>19CSE305<br>Credits: 4</div>
-                    <div class="course" data-link="https://drive.google.com/drive/folders/1-FHpMvIjaj2vbBAft3k7c8w1UNeH-Lsz?usp=sharing">Design and Analysis of Algorithms<br>19CSE302<br>Credits: 4</div>
-                    <div class="course" data-link="https://drive.google.com/drive/folders/1IMBsZhbYb9nihcH0dG6v3o3c1426xBLm?usp=sharing">Computer Networks<br>19CSE301<br>Credits: 4</div>
-                    <div class="course" data-link="https://drive.google.com/drive/folders/16hJK5OBLzOPlzxS_FqEKMGZ-Z9HGlxcT?usp=sharing">Foundation of Data Science<br>19CSE304<br>Credits: 3</div>
-                    <div class="course" data-link="https://drive.google.com/drive/folders/1_wxmTMgvb5ebANmIHlf2ozxo_mTbYDd4?usp=sharing">Embedded Systems<br>19CSE303<br>Credits: 4</div>
-                    <div class="course" data-link="https://drive.google.com/drive/folders/1EvEsDenBC6heF1uEvc3sgYRCQi0KjwKb?usp=sharing">Big Data Analytics<br>19CSE357<br>Credits: 3</div>
+                    <div class="course" onclick="window.location.href='https://drive.google.com/drive/folders/1rUVz5ji7zNnnt1l_DhvbOCfSFWz6QUkb?usp=sharing'">Machine Learning<br>19CSE305<br>Credits: 4</div>
+                    <div class="course" onclick="window.location.href='https://drive.google.com/drive/folders/1-FHpMvIjaj2vbBAft3k7c8w1UNeH-Lsz?usp=sharing'">Design and Analysis of Algorithms<br>19CSE302<br>Credits: 4</div>
+                    <div class="course" onclick="window.location.href='https://drive.google.com/drive/folders/1IMBsZhbYb9nihcH0dG6v3o3c1426xBLm?usp=sharing'">Computer Networks<br>19CSE301<br>Credits: 4</div>
+                    <div class="course" onclick="window.location.href='https://drive.google.com/drive/folders/16hJK5OBLzOPlzxS_FqEKMGZ-Z9HGlxcT?usp=sharing'">Foundation of Data Science<br>19CSE304<br>Credits: 3</div>
+                    <div class="course" onclick="window.location.href='https://drive.google.com/drive/folders/1_wxmTMgvb5ebANmIHlf2ozxo_mTbYDd4?usp=sharing'">Embedded Systems<br>19CSE303<br>Credits: 4</div>
+                    <div class="course" onclick="window.location.href='https://drive.google.com/drive/folders/1EvEsDenBC6heF1uEvc3sgYRCQi0KjwKb?usp=sharing'">Big Data Analytics<br>19CSE357<br>Credits: 3</div>
                 </div>
             </div>
             <div class="right-half">
@@ -386,14 +331,6 @@
         </div>
     </div>
 
-    <!-- Frame Container -->
-    <div class="frame-container" id="frameContainer">
-        <div class="frame">
-            <button class="close-btn" onclick="closeFrame()">✖</button>
-            <iframe id="frameContent"></iframe>
-        </div>
-    </div>
-
     <script>
         const monthNames = ["January", "February", "March", "April", "May", "June",
                             "July", "August", "September", "October", "November", "December"];
@@ -402,7 +339,13 @@
 
         function toggleMode() {
             const body = document.body;
+            const banner = document.querySelector('.banner');
             body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                banner.style.backgroundImage = 'url("banner1.gif")';
+            } else {
+                banner.style.backgroundImage = 'url("banner2.gif")';
+            }
         }
 
         function renderCalendar(month, year) {
@@ -447,29 +390,7 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             renderCalendar(currentMonth, currentYear);
-            
-            // Add event listeners to courses
-            document.querySelectorAll('.course').forEach(course => {
-                course.addEventListener('click', (e) => {
-                    const link = e.currentTarget.getAttribute('data-link');
-                    openFrame(link);
-                });
-            });
         });
-
-        function openFrame(link) {
-            const frameContainer = document.getElementById('frameContainer');
-            const frameContent = document.getElementById('frameContent');
-            frameContent.src = link;
-            frameContainer.classList.add('visible');
-        }
-
-        function closeFrame() {
-            const frameContainer = document.getElementById('frameContainer');
-            frameContainer.classList.remove('visible');
-            const frameContent = document.getElementById('frameContent');
-            frameContent.src = '';
-        }
     </script>
 </body>
 </html>
